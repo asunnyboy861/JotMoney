@@ -1,0 +1,125 @@
+{
+  "identifier" : "A1B2C3D4",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "59.99",
+      "familyShareable" : false,
+      "internalID" : "1000000001",
+      "localizations" : [
+        {
+          "description" : "Own it forever. Use your own AI key, unlimited.",
+          "displayName" : "JotMoney BYO Lifetime",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.zzoutuo.jotmoney.pro.lifetime",
+      "referenceName" : "JotMoney BYO Lifetime",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "2000000001",
+      "localizations" : [
+
+      ],
+      "name" : "JotMoney Pro",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "3.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "2000000002",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Unlimited accounts, budgets, receipts and sync.",
+              "displayName" : "JotMoney Pro Monthly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.zzoutuo.jotmoney.pro.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "JotMoney Pro Monthly",
+          "subscriptionGroupID" : "2000000001",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "19.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "2000000003",
+          "introductoryOffer" : {
+            "internalID" : "2000000004",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Every Pro feature. Free for 7 days, cancel anytime.",
+              "displayName" : "JotMoney Pro Annual",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.zzoutuo.jotmoney.pro.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "JotMoney Pro Annual",
+          "subscriptionGroupID" : "2000000001",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "29.99",
+          "familyShareable" : true,
+          "groupNumber" : 1,
+          "internalID" : "2000000005",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Pro for up to 8 people with a shared ledger.",
+              "displayName" : "JotMoney Family Annual",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.zzoutuo.jotmoney.family.yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "JotMoney Family Annual",
+          "subscriptionGroupID" : "2000000001",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

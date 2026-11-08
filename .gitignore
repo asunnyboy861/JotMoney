@@ -1,0 +1,12 @@
+.DS_Store
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+.env
+keytext*.md
+COMPETITOR_REPORT.md
+app_audit*.md
+improvement_plan_*.md
+icon_raw.png
+JotMoney/GLMProxySecret.txt

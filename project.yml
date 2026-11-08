@@ -1,0 +1,98 @@
+name: JotMoney
+options:
+  bundleIdPrefix: com.zzoutuo
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: JP4TN5PTS3
+    CODE_SIGN_STYLE: Automatic
+    CODE_SIGN_IDENTITY: "Apple Development"
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    SWIFT_EMIT_LOC_STRINGS: YES
+    LOCALIZATION_PREFERS_STRING_CATALOGS: YES
+targets:
+  JotMoney:
+    type: application
+    platform: iOS
+    sources:
+      - path: JotMoney
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.zzoutuo.JotMoney
+        PRODUCT_NAME: JotMoney
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: JotMoney
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait"
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
+        INFOPLIST_KEY_NSCameraUsageDescription: "JotMoney scans receipts to prefill your transaction automatically."
+        INFOPLIST_KEY_NSMicrophoneUsageDescription: "JotMoney uses the microphone for voice entry so you can log a transaction by speaking."
+        INFOPLIST_KEY_NSSpeechRecognitionUsageDescription: "JotMoney transcribes your spoken entry on device to create a transaction."
+        INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "JotMoney can read a receipt photo you choose to prefill a transaction."
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        CODE_SIGN_ENTITLEMENTS: JotMoney/JotMoney.entitlements
+      configs:
+        Release:
+          EXCLUDED_SOURCE_FILE_NAMES: GLMProxySecret.txt
+    dependencies:
+      - target: JotMoneyWidget
+        embed: true
+    entitlements:
+      path: JotMoney/JotMoney.entitlements
+      properties:
+        aps-environment: development
+        com.apple.security.application-groups:
+          - group.com.zzoutuo.JotMoney
+        com.apple.developer.icloud-container-identifiers:
+          - iCloud.com.zzoutuo.JotMoney
+        com.apple.developer.icloud-services:
+          - CloudKit
+        com.apple.developer.ubiquity-kvstore-identifier: $(TeamIdentifierPrefix)com.zzoutuo.JotMoney
+  JotMoneyWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: JotMoneyWidget
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.zzoutuo.JotMoney.widget
+        PRODUCT_NAME: JotMoneyWidget
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SKIP_INSTALL: YES
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: JotMoneyWidget/Info.plist
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        CODE_SIGN_ENTITLEMENTS: JotMoneyWidget/JotMoneyWidget.entitlements
+    info:
+      path: JotMoneyWidget/Info.plist
+      properties:
+        CFBundleDisplayName: JotMoney
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: JotMoneyWidget/JotMoneyWidget.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.zzoutuo.JotMoney
+schemes:
+  JotMoney:
+    build:
+      targets:
+        JotMoney: all
+        JotMoneyWidget: all
+    run:
+      config: Debug
+      storeKitConfiguration: JotMoney/Products.storekit
+    archive:
+      config: Release
