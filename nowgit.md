@@ -10,16 +10,16 @@
 | **Visibility** | Public |
 | **Primary Language** | Swift |
 | **Project Generator** | xcodegen (`project.yml` is the single source of truth) |
-| **GitHub Pages** | ⏳ Pending (deployed in PHASE 7) |
+| **GitHub Pages** | ✅ **ENABLED** (from `/docs` folder) |
 
 ## Policy Pages (Deployed from Main Repository /docs)
 
 | Page | URL | Status |
 |------|-----|--------|
-| Landing Page | https://asunnyboy861.github.io/JotMoney/ | ⏳ Pending |
-| Support | https://asunnyboy861.github.io/JotMoney/support.html | ⏳ Pending |
-| Privacy Policy | https://asunnyboy861.github.io/JotMoney/privacy.html | ⏳ Pending |
-| Terms of Use | https://asunnyboy861.github.io/JotMoney/terms.html | ⏳ Pending |
+| Landing Page | https://asunnyboy861.github.io/JotMoney/ | ✅ Active |
+| Support | https://asunnyboy861.github.io/JotMoney/support.html | ✅ Active |
+| Privacy Policy | https://asunnyboy861.github.io/JotMoney/privacy.html | ✅ Active |
+| Terms of Use | https://asunnyboy861.github.io/JotMoney/terms.html | ✅ Active |
 
 ## Repository Structure
 

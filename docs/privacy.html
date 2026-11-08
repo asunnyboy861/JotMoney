@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — JotMoney</title>
+<style>
+  :root{--bg:#0B0F0E;--surface:#151A18;--line:#242B28;--text:#F5F7F6;--muted:#9AA5A1;--mint:#00C48C}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.7}
+  a{color:var(--mint);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:820px;margin:0 auto;padding:0 24px}
+  header{padding:28px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+  .brand{font-weight:700;color:var(--mint)}
+  nav{display:flex;gap:18px;font-size:14px}
+  nav a{color:var(--muted)}
+  main{padding:44px 0 64px}
+  h1{font-size:clamp(30px,5vw,42px);margin:0 0 6px;letter-spacing:-.6px}
+  .updated{color:var(--muted);font-size:14px;margin:0 0 30px}
+  h2{font-size:20px;margin:32px 0 10px}
+  p,li{color:var(--muted);font-size:15px}
+  .highlight{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;margin:20px 0}
+  .highlight p{margin:0;color:var(--text)}
+  footer{padding:28px 0 60px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">JotMoney</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="support.html">Support</a>
+      <a href="terms.html">Terms</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: November 8, 2026</p>
+
+    <div class="highlight">
+      <p><strong>The short version:</strong> JotMoney has no account, no analytics SDK, and no tracking. Your ledger is stored on your device. iCloud sync is optional and uses your own private iCloud database. We do not operate a server that stores your financial data.</p>
+    </div>
+
+    <h2>1. Information we do not collect</h2>
+    <p>JotMoney does not collect your name, address, contacts, location, advertising identifier, or browsing activity. The app contains no third-party analytics, advertising, or attribution SDKs.</p>
+
+    <h2>2. Information stored on your device</h2>
+    <p>The app stores the accounts, transactions, budgets, recurring rules, installment plans, interest entries, merchant shortcuts, and settings that you create. This data lives in the app's local database on your device. You can export it at any time as CSV from Ledger → menu → Export CSV.</p>
+
+    <h2>3. iCloud sync (optional)</h2>
+    <p>If you turn on iCloud Sync in Settings, your data is stored in your private iCloud database using Apple's CloudKit framework. That data is governed by your Apple Account and Apple's privacy terms. We cannot read it. If you never turn on iCloud Sync, no JotMoney data leaves your device through iCloud.</p>
+
+    <h2>4. Artificial intelligence features</h2>
+    <p>Core bookkeeping — balances, Safe to Spend, installments, interest, duplicate detection, forecasts — is computed entirely on your device and never involves a network request.</p>
+    <p>Optional AI features work in one of three ways, depending on what you enable:</p>
+    <ul>
+      <li><strong>Apple Intelligence:</strong> processed on device by Apple's Foundation Models. Nothing is sent to us.</li>
+      <li><strong>Your own API key:</strong> when you add a key for a provider you choose (GLM, OpenAI, Google, Anthropic, DeepSeek, or a custom endpoint), the text or receipt image you submit for that request is sent directly to that provider under their terms. Your key is stored in the iOS Keychain on your device and is never sent to us.</li>
+      <li><strong>Built-in Pro quota:</strong> text or receipt images submitted for AI processing are relayed through our Cloudflare Worker to the AI provider solely to produce the response. Requests are authenticated and rate limited. We do not store your ledger or the content of your prompts.</li>
+    </ul>
+    <p>If you never use the AI features, no text or image ever leaves your device.</p>
+
+    <h2>5. Feedback you send us</h2>
+    <p>If you use Settings → Contact Support, we receive the name, email address, subject, and message you submit, plus the app name. We use them only to respond to your feedback. Feedback is transmitted over HTTPS to our Cloudflare-hosted endpoint.</p>
+
+    <h2>6. Purchases</h2>
+    <p>Subscriptions and the one-time purchase are processed by Apple through the App Store. We receive entitlement status, not your payment details. Apple's privacy policy applies to the transaction.</p>
+
+    <h2>7. Data retention and deletion</h2>
+    <p>Your ledger lives on your device. Deleting the app removes local data. If iCloud Sync was enabled, you can remove the synced copy in the Settings app → your name → iCloud → Manage Account Storage. Feedback emails are retained only as long as needed to resolve your request.</p>
+
+    <h2>8. Children</h2>
+    <p>JotMoney is rated 4+ and is not directed to children under 13. We do not knowingly collect personal information from children.</p>
+
+    <h2>9. Security</h2>
+    <p>Data is protected by iOS app sandboxing and device encryption. API keys are stored in the iOS Keychain. Network requests use HTTPS.</p>
+
+    <h2>10. Changes</h2>
+    <p>If this policy changes materially, we will update this page and the date above.</p>
+
+    <h2>11. Contact</h2>
+    <p>Questions about privacy: <a href="mailto:iocompile67692@gmail.com">iocompile67692@gmail.com</a></p>
+  </main>
+
+  <footer>
+    <p>© <span id="year">2026</span> JotMoney · <a href="support.html">Support</a> · <a href="terms.html">Terms</a></p>
+  </footer>
+</div>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
