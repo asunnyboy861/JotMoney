@@ -1,80 +1,106 @@
-# Capabilities Configuration
+# JotMoney — Configuration Reference
 
-> This is the PHASE 2 developer view. It is rewritten into a user-facing configuration reference in PHASE 8.5.
+Everything that can be automated is already configured. The short list below is what only you can do, because it requires your Apple Account.
 
-## Analysis
+## Manual configuration required (do these before release)
 
-Detected requirements from the Chinese guide + `us.md`:
+### 1. Sign the app for a real device (iOS)
 
-| Requirement | Keyword source | Capability |
+The project already contains a valid project-level team (`JP4TN5PTS3`) and automatic signing. The provisioning profile on this machine does not yet include the App Group or the iCloud container, so a device build reports a signing error until Xcode registers them.
+
+1. Open `JotMoney.xcodeproj` in Xcode and sign in with your Apple ID (Xcode → Settings → Accounts).
+2. Select the `JotMoney` scheme and run:
+
+```
+xcodebuild -project JotMoney.xcodeproj -scheme JotMoney \
+  -destination 'generic/platform=iOS' -allowProvisioningUpdates build
+```
+
+Xcode registers `group.com.zzoutuo.JotMoney` and `iCloud.com.zzoutuo.JotMoney` on the developer portal automatically.
+
+### 2. Deploy the CloudKit schema to Production
+
+1. Run the app once on a real device (or a simulator signed into iCloud).
+2. Open https://icloud.developer.apple.com → container `iCloud.com.zzoutuo.JotMoney` → **Deploy Schema Changes to Production**.
+
+Required before App Store release. Without it, iCloud sync fails for release users; the app still works locally.
+
+### 3. Create the four in-app purchase products in App Store Connect
+
+| Product ID | Type | Price |
 |---|---|---|
-| Optional iCloud sync of the ledger | "iCloud 同步可选" / `cloudKitDatabase: .private` | iCloud / CloudKit |
-| Family shared ledger | "家庭/共享账本" / CKShare | iCloud (CloudKit sharing) |
-| Lock screen Safe to Spend widget | "锁屏 inline widget" | WidgetKit + App Group |
-| Voice entry | "语音记账" / on-device dictation | Microphone + Speech Recognition |
-| Receipt OCR capture | "拍小票" / VisionKit DataScanner | Camera (+ Photo Library fallback) |
-| Siri quick logging | "Hey Siri, log coffee five fifty" | App Intents / Siri |
-| Subscriptions | Pro Monthly / Pro Yearly / BYO Lifetime / Family | In-App Purchase (StoreKit 2) |
-| Outbound AI calls | BYO OpenAI-compatible + GLM cloud | App Transport Security default (HTTPS) |
+| `com.zzoutuo.jotmoney.pro.monthly` | Auto-renewable, group "JotMoney Pro" | $3.99 / month |
+| `com.zzoutuo.jotmoney.pro.yearly` | Auto-renewable, group "JotMoney Pro" | $19.99 / year, 7-day free trial |
+| `com.zzoutuo.jotmoney.family.yearly` | Auto-renewable, group "JotMoney Pro" | $29.99 / year |
+| `com.zzoutuo.jotmoney.pro.lifetime` | Non-consumable | $59.99 once |
 
-## Auto-Configured Capabilities
+Display names and descriptions are in `price.md` (all within Apple's 35/55 character limits).
 
-| Capability | Status | Method |
+### 4. GLM cloud AI development key (optional, only for local testing without a subscription)
+
+The app uses the subscription JWS channel in production, which needs no setup. For local testing without a subscription, place the development key at `JotMoney/GLMProxySecret.txt`:
+
+```
+<dev key value>
+```
+
+That file is git-ignored and excluded from Release builds via `EXCLUDED_SOURCE_FILE_NAMES`. The app's Bundle ID is already registered in the shared proxy whitelist (`appId: jotmoney`).
+
+### 5. App Store Connect app record
+
+Create the app, set the name `JotMoney`, subtitle, category Finance, age rating 4+, and paste the metadata from `keytext.md`. Support / Privacy / Terms URLs are live (see below).
+
+---
+
+## Auto-configured (no action needed)
+
+| Capability | Status | Where |
 |---|---|---|
-| iCloud container `iCloud.com.zzoutuo.JotMoney` | ✅ Configured in entitlements | `project.yml` → `JotMoney/JotMoney.entitlements` |
-| CloudKit service | ✅ Configured | `com.apple.developer.icloud-services = CloudKit` |
-| Ubiquity key-value store | ✅ Configured | `$(TeamIdentifierPrefix)com.zzoutuo.JotMoney` |
-| `aps-environment` (CloudKit silent push) | ✅ Configured (`development`) | Required for CloudKit background sync |
-| App Group `group.com.zzoutuo.JotMoney` | ✅ Configured (App + Widget) | Both entitlement files |
-| WidgetKit lock screen widget target | ✅ Configured | `JotMoneyWidget` app-extension target |
-| Camera usage string | ✅ Configured | `INFOPLIST_KEY_NSCameraUsageDescription` |
-| Microphone usage string | ✅ Configured | `INFOPLIST_KEY_NSMicrophoneUsageDescription` |
-| Speech recognition usage string | ✅ Configured | `INFOPLIST_KEY_NSSpeechRecognitionUsageDescription` |
-| Photo library usage string | ✅ Configured | `INFOPLIST_KEY_NSPhotoLibraryUsageDescription` |
-| Export compliance | ✅ Configured | `ITSAppUsesNonExemptEncryption = NO` |
-| Privacy manifest (App) | ✅ Configured | `JotMoney/Resources/PrivacyInfo.xcprivacy` — UserDefaults CA92.1 + FileTimestamp C617.1, no tracking, no collected data |
-| Privacy manifest (Widget) | ✅ Configured | `JotMoneyWidget/PrivacyInfo.xcprivacy` — UserDefaults CA92.1 |
-| In-App Purchase | ✅ Configured | StoreKit 2 code-level; products created in ASC (PHASE 3 defines IDs) |
-| App Intents / Siri | ✅ Configured | `Intents/` module, no extra entitlement required |
-| iPhone + iPad | ✅ Configured | `TARGETED_DEVICE_FAMILY = "1,2"` |
-| Signing team | ✅ Baked at project level | `DEVELOPMENT_TEAM = JP4TN5PTS3` |
+| Bundle ID `com.zzoutuo.JotMoney` | Configured | `project.yml` |
+| Development team | Configured project-wide | `project.yml` (`JP4TN5PTS3`) |
+| App Group `group.com.zzoutuo.JotMoney` | Configured (App + Widget) | both `.entitlements` |
+| iCloud container `iCloud.com.zzoutuo.JotMoney` | Configured | `JotMoney/JotMoney.entitlements` |
+| CloudKit service + `aps-environment` | Configured | entitlements |
+| WidgetKit lock screen widget | Configured | `JotMoneyWidget` target |
+| Camera, Microphone, Speech, Photo usage strings | Configured | `INFOPLIST_KEY_*` in `project.yml` |
+| Export compliance | Configured (`ITSAppUsesNonExemptEncryption = NO`) | build settings |
+| Privacy manifest (App) | Configured (no tracking, no collected data) | `JotMoney/Resources/PrivacyInfo.xcprivacy` |
+| Privacy manifest (Widget) | Configured | `JotMoneyWidget/PrivacyInfo.xcprivacy` |
+| StoreKit 2 purchase manager | Implemented | `Store/StoreManager.swift` |
+| Local StoreKit test products | Configured | `JotMoney/Products.storekit` + scheme |
+| App Intents / Siri | Implemented | `Intents/JotMoneyIntents.swift` |
+| Feedback backend | Configured | `https://msg.calcs.top/api/feedback` |
+| iPhone + iPad | Configured | `TARGETED_DEVICE_FAMILY = 1,2` |
+| Policy pages | Deployed | GitHub Pages from `/docs` |
+| GLM proxy whitelist | Registered (`jotmoney`) | Cloudflare D1 |
 
-## Manual Configuration Required
+## Deliberately absent
 
-| Capability | Status | Steps |
-|---|---|---|
-| Device signing with App Group + iCloud | ⏳ Deferred | Sign into Xcode with the developer Apple ID, then run `xcodebuild -project JotMoney.xcodeproj -scheme JotMoney -destination 'generic/platform=iOS' -allowProvisioningUpdates build`. Xcode auto-registers the App Group and iCloud container on the portal. |
-| CloudKit schema → Production | ⏳ Pending | After the first real-device (or iCloud-signed-in simulator) run, open CloudKit Dashboard → container `iCloud.com.zzoutuo.JotMoney` → Deploy Schema Changes to Production. Required before App Store release. |
-| StoreKit products | ⏳ Pending | Created via ASC in PHASE 3 / `ios-asc-metadata-pricing`. |
-| GLM cloud proxy key | ⏳ Pending | Handled by the `glm-api-config` skill in PHASE 4+5 (key stays server-side). |
+- No analytics SDK, no advertising SDK, no attribution SDK.
+- No account system and no Sign in with Apple.
+- No ATT prompt (nothing is tracked).
+- No HealthKit, no Location, no background modes.
+- No server of our own storing ledger data.
 
-## No Configuration Needed
+## URLs
 
-- Push Notifications (remote) — not used; only CloudKit's automatic silent push, covered by `aps-environment`.
-- HealthKit — not applicable.
-- Location Services — not applicable.
-- Background Modes — no `UIBackgroundModes` required; SwiftData + CloudKit syncs opportunistically.
-- Sign in with Apple — deliberately absent (no-account product).
-- Analytics / ATT — deliberately absent (privacy is a selling point).
+| Page | URL |
+|---|---|
+| Landing | https://asunnyboy861.github.io/JotMoney/ |
+| Support | https://asunnyboy861.github.io/JotMoney/support.html |
+| Privacy | https://asunnyboy861.github.io/JotMoney/privacy.html |
+| Terms | https://asunnyboy861.github.io/JotMoney/terms.html |
 
-## iCloud / CloudKit Verification Notes
+## Verification performed
 
-- Entitlement keys present: `com.apple.developer.icloud-container-identifiers`, `com.apple.developer.icloud-services`, `com.apple.developer.ubiquity-kvstore-identifier`, `aps-environment`.
-- Container naming follows `iCloud.<bundleId>` = `iCloud.com.zzoutuo.JotMoney`.
-- Widget extension intentionally has **no** iCloud entitlement — it reads a snapshot through the App Group only.
-- SwiftData + CloudKit code constraints for PHASE 4+5 (mandatory):
-  - No `@Attribute(.unique)` anywhere.
-  - Every stored property has a default value or is optional.
-  - Relationships are optional (or have defaults).
-  - Enums persisted as `rawValue`.
-  - `ModelConfiguration(schema:cloudKitDatabase: .private("iCloud.com.zzoutuo.JotMoney"))` with a degradation chain: CloudKit → local → in-memory, never crash.
-- Simulator builds resolve `ENTITLEMENTS_REQUIRED = NO` and produce an empty entitlements dict — expected, not a configuration error. Real-device build is the authoritative check.
-
-## Verification
-
-- **Build succeeded after configuration (iOS Simulator, iPhone 16)**: ✅ `** BUILD SUCCEEDED **`
-- **All entitlements correct**: ✅ (App: 5 keys; Widget: App Group only)
-- **Signing verification (`generic/platform=iOS`)**: ⏳ DEFERRED — provisioning profile does not yet include App Group / iCloud; user signs into Xcode, then runs `-allowProvisioningUpdates` once
-- **DEVELOPMENT_TEAM**: `JP4TN5PTS3` baked at project level (inherited by every target)
-- **PrivacyInfo.xcprivacy**: App target + Widget target covered
-- **Project root**: `/Volumes/ORICO-APFS/app/APP/IOS-APP/2026/202610/20261014/JotMoney`
+| Check | Result |
+|---|---|
+| iPhone 16 simulator build | BUILD SUCCEEDED |
+| iPad Pro 13-inch simulator build | BUILD SUCCEEDED |
+| Fresh install → onboarding → home | Passed (3-screen onboarding, first transaction) |
+| Home / Ledger / Insights render | Passed (screenshots verified) |
+| Device signing | Deferred to step 1 above (portal registration) |
+| Secret scan before push | Clean |
+| Empty `DEVELOPMENT_TEAM` scan | 0 matches |
+| Privacy manifest present in both targets | Yes |
+| Paywall legal links | Present (Privacy, Terms, Support) |
